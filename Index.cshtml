@@ -1,0 +1,186 @@
+﻿
+<html>
+
+<body>
+<div class="container">
+        <br />
+        <br />
+        <div class="row">
+            <h1 style="color:Blue;">
+                <marquee>Register your Details!</marquee>
+            </h1>
+        </div>
+        <br />
+        <div class="row">
+        <label>ID</label>
+        <input type="text" class="form-control" id="txtid" placeholder="Enter id" /><br /></div>
+        <div class= "row">
+        <label>Name</label>
+        <input type="text" class="form-control" id="txtname" placeholder="Enter your Name" /><br /></div>    
+        <div class="row">
+        <label>City</label>
+        <input type="text" class="form-control" id="txtcity" placeholder="Your current place" /><br /></div>
+        <div class="row">
+        <label>Age</label>
+        <input type="text" class="form-control" id="txtage" placeholder="Your Age" /><br /></div>
+        <br />
+        <div class="row">
+             <button type="button" class="btn btn-primary" id="btnsave">SAVE</button>
+             <button type="button" class="btn btn-primary" id="btnupdate">UPDATE</button>
+             <button type="button" class="btn btn-primary" id="btndelete">DELETE</button>
+        </div>
+        <br />
+        <br />
+        <div>
+        <p><i>Note:Use id value to update/delete data from the table</i></p>
+            <table id="grid" class="display" border="1">
+                <thead>
+                    <tr>
+                        <th>
+                            ID
+                        </th>
+                        <th>
+                            NAME
+                        </th>
+                        <th>
+                            CITY
+                        </th>
+                        <th>
+                            AGE
+                        </th>     
+                    </tr>
+                </thead>
+            </table>
+        </div>
+</div>
+</body>
+</html>   
+ 
+       <script src="../../Scripts/jquery-1.6.2.js" type="text/javascript"></script>
+        <script src="../../Scripts/jquery-1.6.2.min.js" type="text/javascript"></script>
+               
+                <script src="../../Content/bootstrap-3.3.6-dist/js/bootstrap.min.js" type="text/javascript"></script>
+                        
+  <link href="../../Content/bootstrap-3.3.6-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+
+                <script src="../../Content/DataTables-1.9.4/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
+
+        <link href="../../Content/DataTables-1.9.4/media/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+
+   
+       
+<script type="text/javascript">
+
+                        $("#grid").dataTable({
+                        "sAjaxSource": "../Home/grid",      //sAjaxSource for loading data from external source contains URL from -
+                        "bDestroy": true,                   // - which a JSON object can be obtained from.
+                        "aoColumns": [                          
+                                        { "sName": " " },       //aoColumns (array), the length of this array should be equal to 
+
+                                        { "sName": " " },       // - no.of columns.
+
+                                        { "sName": " " },
+
+                                        { "sName": " " },
+
+                                       ]
+                    });
+                    //alert("Data table 1");
+
+                    $("#grid").delegate("tr", "click", function () {    //delegate(selector,event,function) of jquery.
+                        var list = $("#grid").DataTable();
+                        var ipos = list.fnGetPosition(this);
+                        if (ipos != null) {
+
+                            var aData = list.fnGetData(ipos);
+                            var iId0 = aData[0];
+                            var iId1 = aData[1];
+                            var iId2 = aData[2];
+                            var iId3 = aData[3];
+
+                            $("#txtid").val(iId0);
+                            $("#txtname").val(iId1);
+                            $("#txtcity").val(iId2);
+                            $("#txtage").val(iId3);
+
+                        }
+                    });
+                    //alert("Data table 2");
+
+
+
+
+                    $("#btnsave").click(function () 
+                    {
+                    var id = $("#txtid").val();
+                    var name = $("#txtname").val();
+                    var city = $("#txtcity").val();
+                    var age = $("#txtage").val();
+                    alert("Value being passed into controller");
+
+                    $.ajax({
+
+                        url: '../Home/Save',
+                        type: 'GET',
+                        data: { id: id, name: name, city: city, age: age },
+                        success: function (data) {
+                        alert("Save successful!");
+                        window.location.href = '../Home/Index';
+                        }
+
+                });
+            });
+
+            
+                    $("#btnupdate").click(function () {
+
+                        var id = $("#txtid").val();
+                        var name = $("#txtname").val();
+                        var city = $("#txtcity").val();
+                        var age = $("#txtage").val();
+                        alert("Update data being passed into controller");
+
+                    $.ajax({
+
+                        url: '../Home/update',
+                        TYPE: 'POST',
+                        data: { id: id, name: name, city: city, age: age },
+                        success: function (data) {
+                            alert("successfully updated");
+                            window.location.href = "../Home/Index";
+                            }
+        });
+    });
+
+
+
+                    $("#btndelete").click(function () {
+
+                        var id = $("#txtid").val();
+                        alert("Delete data being passed into controller");
+                        //        var name = ("#txtnme").val();
+                        //        var city = ("#txtpla").val();
+
+                    $.ajax({
+
+                        url: '../Home/delete',
+                        TYPE: 'POST',
+                        data: { id: id },
+                        success: function (data) {
+                            alert("successfully deleted");
+                            window.location.href = "../Home/Index";
+
+                        }
+                });
+            });
+
+
+            
+       
+</script>
+    
+    
+    
+    
+    
